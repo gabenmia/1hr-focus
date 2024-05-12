@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>One Hour Countdown Timer</title>
+<script>
+var interval;
+var remainingSeconds = 3600;  // Start with one hour
+
+function formatTime(seconds) {
+    var hours = parseInt(seconds / 3600, 10);
+    var minutes = parseInt((seconds % 3600) / 60, 10);
+    var seconds = parseInt(seconds % 60, 10);
+
+    hours = hours < 10 ? "0" + hours : hours;
+    minutes = minutes < 10 ? "0" + minutes : minutes;
+    seconds = seconds < 10 ? "0" + seconds : seconds;
+
+    return hours + ":" + minutes + ":" + seconds;
+}
+
+function startTimer(duration, display) {
+    clearInterval(interval);  // Clear any existing intervals
+    remainingSeconds = duration;  // Reset or set the duration
+    interval = setInterval(function () {
+        display.textContent = formatTime(remainingSeconds);
+        if (remainingSeconds <= 0) {
+            clearInterval(interval);
+            display.textContent = "00:00:00";  // Display zero time if time runs out
+        } else {
+            remainingSeconds--;
+        }
+    }, 1000);
+}
+
+function pauseTimer() {
+    clearInterval(interval);
+}
+
+function restartTimer(display) {
+    startTimer(3600, display);  // Restart the timer from one hour
+}
+
+window.onload = function () {
+    var display = document.querySelector('#time');
+    display.textContent = formatTime(remainingSeconds);  // Display initial timer value on load
+};
+</script>
+</head>
+<body>
+<h1>Countdown Timer</h1>
+<div id="time"></div>
+<button onclick="startTimer(3600, document.getElementById('time'))">Start</button>
+<button onclick="pauseTimer()">Pause</button>
+<button onclick="restartTimer(document.getElementById('time'))">Restart</button>
+</body>
+</html>
